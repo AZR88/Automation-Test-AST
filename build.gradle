@@ -1,0 +1,70 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.demoblaze.experiment'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+dependencies {
+    // Core Selenium & Driver Management
+    implementation 'org.seleniumhq.selenium:selenium-java:4.17.0'
+    implementation 'io.github.bonigarcia:webdrivermanager:5.5.3'
+
+    // Cucumber (Varian 3 & 4)
+    testImplementation 'io.cucumber:cucumber-java:7.12.0'
+    testImplementation 'io.cucumber:cucumber-junit:7.12.0'
+    testImplementation 'io.cucumber:cucumber-core:7.12.0'
+
+    // TestNG (Varian 1 & 2)
+    testImplementation 'org.testng:testng:7.8.0'
+
+    // Assertion
+    testImplementation 'org.assertj:assertj-core:3.24.0'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.7'
+}
+
+// Konfigurasi Task untuk Eksekusi Terisolasi
+def tags = findProperty('tags') ?: 'not @ignore'
+
+// Task untuk BDD Saja (Varian 3)
+task runV3BDD(type: JavaExec) {
+    group = "verification"
+    mainClass = "io.cucumber.core.cli.Main"
+    classpath = sourceSets.test.runtimeClasspath
+    args = [
+            '--plugin', 'pretty',
+            '--plugin', 'html:reports/v3-bdd/report.html',
+            '--glue', 'com.demoblaze.v3.bdd.steps',
+            'src/test/resources/features/v3_bdd'
+    ]
+}
+
+// Task untuk BDD + POM (Varian 4)
+task runV4BDDPOM(type: JavaExec) {
+    group = "verification"
+    mainClass = "io.cucumber.core.cli.Main"
+    classpath = sourceSets.test.runtimeClasspath
+    args = [
+            '--plugin', 'pretty',
+            '--plugin', 'html:reports/v4-bddpom/report.html',
+            '--glue', 'com.demoblaze.v4.bddpom.steps',
+            'src/test/resources/features/v4_bddpom'
+    ]
+}
+
+// Menjalankan TestNG untuk Varian 1 & 2
+test {
+    useTestNG()
+    include 'com/demoblaze/v1/**'
+    include 'com/demoblaze/v2/**'
+}
