@@ -1,26 +1,23 @@
 package v4.bddpom.steps;
 
-import helper.utils;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import org.openqa.selenium.WebDriver;
-
+import static helper.WebHelper.startDriver;
+import static helper.WebHelper.tearDown;
 
 public class hooks {
-    // Kita gunakan static agar driver bisa diakses langsung
-    // oleh Step Definitions tanpa Dependency Injection yang rumit
     public static WebDriver driver;
 
     @Before
-    public void setUp() {
-        // Memanggil DriverFactory netral yang sudah kita buat
-        driver = utils.getDriver("chrome");
-        driver.get("https://www.demoblaze.com/");
+    public void beforeTest() {
+        String browser = System.getProperty("browser", "chrome"); // Default to chrome if no property is set
+        System.out.println("Running tests on: " + browser);
+        startDriver(browser);
     }
 
     @After
-    public void tearDown() {
-        // Menutup browser setelah skenario selesai
-        utils.quitDriver();
+    public void afterTest() {
+        tearDown();
     }
 }
