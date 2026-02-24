@@ -1,7 +1,7 @@
-package v2.pom.tests;
+package v2.pom.test;
 
 import helper.utils;
-import v2.pom.pages.LoginPage;
+import v2.pom.page.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;

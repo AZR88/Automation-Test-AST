@@ -1,4 +1,4 @@
-package v2.pom.pages;
+package v2.pom.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
