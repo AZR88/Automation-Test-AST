@@ -5,7 +5,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import org.openqa.selenium.WebDriver;
 
-public class hooks {
+public class Hooks {
     // Kita gunakan static agar driver bisa diakses langsung
     // oleh Step Definitions tanpa Dependency Injection yang rumit
     public static WebDriver driver;
@@ -14,7 +14,7 @@ public class hooks {
     public void setUp() {
         // Memanggil DriverFactory netral yang sudah kita buat
         driver = utils.getDriver("chrome");
-        driver.get("https://www.demoblaze.com/,");
+        driver.get("https://www.demoblaze.com/");
     }
 
     @After
