@@ -1,33 +1,55 @@
 package v1.Linear;
 
-import helper.utils;
+import helper.WebHelper;
+import helper.WaitElement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-// PASTIKAN HANYA MENGGUNAKAN IMPORT TESTNG
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import static helper.WebHelper.driver;
 
 public class LoginTest {
-    protected WebDriver driver;
 
     @BeforeMethod
-    public void setUp() {
-        driver = utils.getDriver("chrome");
+    public void setup() {
+        WebHelper.startDriver("chrome");
         driver.get("https://www.demoblaze.com/");
     }
 
     @Test
-    public void testLoginStep() {
-        // Implementasi linear (tradisional) tanpa abstraksi
+    public void testLoginValid() {
+        // Step 1: Click Login Button (Hardcoded Locator)
+        WaitElement.waitForElement(By.id("login2"));
         driver.findElement(By.id("login2")).click();
-        driver.findElement(By.id("loginusername")).sendKeys("azriel_test");
-        driver.findElement(By.id("loginpassword")).sendKeys("password123");
+
+        // Step 2: Input Username (Hardcoded Locator)
+        WaitElement.waitForElement(By.cssSelector("#loginusername"));
+        WebElement userField = driver.findElement(By.cssSelector("#loginusername"));
+        userField.clear();
+        userField.sendKeys("Beta123");
+
+        // Step 3: Input Password (Hardcoded Locator)
+        WaitElement.waitForElement(By.xpath("//*[@id='loginpassword']"));
+        WebElement passField = driver.findElement(By.xpath("//*[@id='loginpassword']"));
+        passField.clear();
+        passField.sendKeys("123");
+
+        // Step 4: Click Submit (Hardcoded Locator)
         driver.findElement(By.xpath("//button[text()='Log in']")).click();
+
+        // Step 5: Assertion (Logic & Selector Mixed)
+        WaitElement.waitForElement(By.xpath("//a[@id='nameofuser']"));
+        String actualUser = driver.findElement(By.xpath("//a[@id='nameofuser']")).getText();
+        Assert.assertTrue(actualUser.contains("Beta123"));
     }
+
+    @Test
+
 
     @AfterMethod
     public void tearDown() {
-        utils.quitDriver();
+        WebHelper.tearDown();
     }
 }
