@@ -20,26 +20,26 @@ public class LoginTest {
 
     @Test
     public void testLoginValid() {
-        // Step 1: Click Login Button (Hardcoded Locator)
+        // Step 1
         WaitElement.waitForElement(By.id("login2"));
         driver.findElement(By.id("login2")).click();
 
-        // Step 2: Input Username (Hardcoded Locator)
+        // Step 2
         WaitElement.waitForElement(By.cssSelector("#loginusername"));
         WebElement userField = driver.findElement(By.cssSelector("#loginusername"));
         userField.clear();
         userField.sendKeys("Beta123");
 
-        // Step 3: Input Password (Hardcoded Locator)
+        // Step 3
         WaitElement.waitForElement(By.xpath("//*[@id='loginpassword']"));
         WebElement passField = driver.findElement(By.xpath("//*[@id='loginpassword']"));
         passField.clear();
         passField.sendKeys("123");
 
-        // Step 4: Click Submit (Hardcoded Locator)
+        // Step 4
         driver.findElement(By.xpath("//button[text()='Log in']")).click();
 
-        // Step 5: Assertion (Logic & Selector Mixed)
+        // Step 5
         WaitElement.waitForElement(By.xpath("//a[@id='nameofuser']"));
         String actualUser = driver.findElement(By.xpath("//a[@id='nameofuser']")).getText();
         Assert.assertTrue(actualUser.contains("Beta123"));
