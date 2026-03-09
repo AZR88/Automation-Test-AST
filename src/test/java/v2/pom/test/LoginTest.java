@@ -1,35 +1,57 @@
 package v2.pom.test;
 
-import helper.utils;
-import v2.pom.page.LoginPage;
-import org.openqa.selenium.WebDriver;
+import helper.WebHelper;
+import v4.bddpom.page.LoginPage; // Menggunakan Page Object yang sudah ada
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import static helper.WebHelper.driver;
 
 public class LoginTest {
-    protected WebDriver driver;
-    protected LoginPage login;
 
     @BeforeMethod
-    public void setUp() {
-        driver = utils.getDriver("chrome");
+    public void setup() {
+        WebHelper.startDriver("chrome");
         driver.get("https://www.demoblaze.com/");
-        // Inisialisasi Page Object
-        login = new LoginPage(driver);
     }
 
-    @Test
-    public void testLoginWithPOM() {
-        login.clickLoginMenu();
-        login.enterCredentials("azriel_test", "password123");
-        login.clickLogin();
+    @Test(priority = 1)
+    public void testLoginValid() {
+        // Menggunakan abstraksi dari LoginPage
+        LoginPage.clickLoginButton(driver);
+        LoginPage.inputUsername(driver, "Beta123");
+        LoginPage.inputPassword(driver, "123");
+        LoginPage.clickSubmitButton(driver);
 
-        System.out.println("Skenario POM Login Selesai.");
+        String actualUser = LoginPage.getDisplayedUsername(driver);
+        Assert.assertEquals(actualUser, "Beta123", "Username tidak sesuai!");
+    }
+
+    @Test(priority = 2)
+    public void testLoginInvalidUser() {
+        LoginPage.clickLoginButton(driver);
+        LoginPage.inputUsername(driver, "UserSalah");
+        LoginPage.inputPassword(driver, "123");
+        LoginPage.clickSubmitButton(driver);
+
+        String alertMsg = LoginPage.getAlertText(driver);
+        Assert.assertEquals(alertMsg, "User does not exist.");
+    }
+
+    @Test(priority = 3)
+    public void testLoginEmptyFields() {
+        LoginPage.clickLoginButton(driver);
+        LoginPage.inputUsername(driver, "");
+        LoginPage.inputPassword(driver, "");
+        LoginPage.clickSubmitButton(driver);
+
+        String alertMsg = LoginPage.getAlertText(driver);
+        Assert.assertEquals(alertMsg, "Please fill out Username and Password.");
     }
 
     @AfterMethod
     public void tearDown() {
-        utils.quitDriver();
+        WebHelper.tearDown();
     }
 }
