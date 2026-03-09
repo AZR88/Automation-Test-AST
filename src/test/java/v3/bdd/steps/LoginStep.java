@@ -1,34 +1,54 @@
 package v3.bdd.steps;
 
 import io.cucumber.java.en.*;
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+import static helper.WebHelper.driver;
 
 public class LoginStep {
 
-    @Given("user is on demoblaze homepage")
-    public void userIsOnDemoblazeHomepage() {
-        // Driver sudah diatur di Hooks untuk buka URL [cite: 142]
-        System.out.println("At Homepage: " + Hooks.driver.getCurrentUrl());
+    @Given("user is on homepage {string}")
+    public void userIsOnHomepage(String expectedUrl) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        boolean isUrlCorrect = wait.until(ExpectedConditions.urlToBe(expectedUrl));
+        Assert.assertTrue("Incorrect URL!", isUrlCorrect);
     }
 
-    @When("user clicks login menu")
-    public void userClicksLoginMenu() {
-        Hooks.driver.findElement(By.id("login2")).click();
-    }
-
-    @And("user enters username {string} and password {string}")
-    public void userEntersUsernameAndPassword(String username, String password) {
-        Hooks.driver.findElement(By.id("loginusername")).sendKeys(username);
-        Hooks.driver.findElement(By.id("loginpassword")).sendKeys(password);
-    }
-
-    @And("user clicks login button")
+    @When("user click Login button")
     public void userClicksLoginButton() {
-        Hooks.driver.findElement(By.xpath("//button[text()='Log in']")).click();
+        // Locator ditulis langsung (Hardcoded)
+        driver.findElement(By.id("login2")).click();
     }
 
-    @Then("login should be successful")
-    public void loginShouldBeSuccessful() {
-        System.out.println("Login step executed.");
+    @And("user input username with {string}")
+    public void userInputsUsernameWith(String username) {
+        // Locator ditulis langsung (Hardcoded)
+        WebElement userField = driver.findElement(By.id("loginusername"));
+        userField.clear();
+        userField.sendKeys(username);
+    }
+
+    @And("user input password with {string}")
+    public void userInputsPasswordWith(String password) {
+        // Locator ditulis langsung (Hardcoded)
+        WebElement passField = driver.findElement(By.xpath("//*[@id='loginpassword']"));
+        passField.clear();
+        passField.sendKeys(password);
+    }
+
+    @And("user click submit")
+    public void userClicksSubmitButton() {
+        driver.findElement(By.xpath("//button[text()='Log in']")).click();
+    }
+
+    @Then("user redirect to home page with {string} username displayed")
+    public void verifyUsername(String expectedUsername) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement userElem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nameofuser")));
+        Assert.assertTrue(userElem.getText().contains(expectedUsername));
     }
 }
