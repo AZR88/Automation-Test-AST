@@ -20,9 +20,7 @@ public class Cart {
 
     public static boolean order(WebDriver driver){
         try {
-
             WaitElement.waitForElement(orderButton);
-
             WebElement order = driver.findElement(orderButton);
             order.click();
             return true;
