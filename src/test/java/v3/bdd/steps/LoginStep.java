@@ -13,6 +13,7 @@ public class LoginStep {
 
     @Given("user is on homepage {string}")
     public void userIsOnHomepage(String expectedUrl) {
+        // Verifikasi URL sebagai pintu masuk tetap dipertahankan
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         boolean isUrlCorrect = wait.until(ExpectedConditions.urlToBe(expectedUrl));
         Assert.assertTrue("Incorrect URL!", isUrlCorrect);
@@ -20,13 +21,12 @@ public class LoginStep {
 
     @When("user click Login button")
     public void userClicksLoginButton() {
-        // Locator ditulis langsung (Hardcoded)
         driver.findElement(By.id("login2")).click();
     }
 
     @And("user input username with {string}")
     public void userInputsUsernameWith(String username) {
-        // Locator ditulis langsung (Hardcoded)
+        // Locator tertulis langsung di sini (Hardcoded)
         WebElement userField = driver.findElement(By.id("loginusername"));
         userField.clear();
         userField.sendKeys(username);
@@ -34,7 +34,7 @@ public class LoginStep {
 
     @And("user input password with {string}")
     public void userInputsPasswordWith(String password) {
-        // Locator ditulis langsung (Hardcoded)
+        // Locator tertulis langsung (Hardcoded)
         WebElement passField = driver.findElement(By.xpath("//*[@id='loginpassword']"));
         passField.clear();
         passField.sendKeys(password);
@@ -47,8 +47,9 @@ public class LoginStep {
 
     @Then("user redirect to home page with {string} username displayed")
     public void verifyUsername(String expectedUsername) {
+        // Verifikasi hasil akhir (Outcome) tetap menggunakan Assert
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement userElem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nameofuser")));
-        Assert.assertTrue(userElem.getText().contains(expectedUsername));
+        Assert.assertTrue("Username mismatch!", userElem.getText().contains(expectedUsername));
     }
 }
