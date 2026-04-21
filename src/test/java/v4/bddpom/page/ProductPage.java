@@ -1,89 +1,37 @@
 package v4.bddpom.page;
 
-import helper.WaitElement;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.By;
 
-import java.time.Duration;
+public class ProductPage extends BasePage {
 
-public class ProductPage {
+    private static final By PRODUCT_TITLE = By.xpath("//h2[@class='name']");
+    private static final By PRODUCT_PRICE = By.xpath("//div[@id='tbodyid']/h3[@class='price-container']");
+    private static final By PRODUCT_PIC = By.xpath("//div[@id='imgp']//img");
+    private static final By ADD_TO_CART = By.xpath("//a[@class='btn btn-success btn-lg' and text()='Add to cart']");
 
-    public static By productPic = By.xpath("//div[@id='imgp']//img");
-    public static By productTitle = By.xpath("//h2[@class='name']");
-    public static By productPrice = By.xpath("//div[@id='tbodyid']/h3[@class='price-container']");
-    public static By addToCart = By.xpath("//a[@class='btn btn-success btn-lg' and text()='Add to cart']");
-
-    public static boolean isProductDescriptionDisplayed(WebDriver driver, String productdesc) {
-        By descLocator = By.xpath("//p[contains(text(),'" + productdesc + "')]");
-        try {
-            WaitElement.waitForElement(descLocator);
-            WebElement productDescriptionElement = driver.findElement(descLocator);
-            return productDescriptionElement.isDisplayed();
-        } catch (TimeoutException | NoSuchElementException e) {
-            System.out.println("Element with product description '" + productdesc + "' not found or not visible.");
-            return false;
-        }
+    public String checkTitle() {
+        return getText(PRODUCT_TITLE);
     }
 
-
-    public static String  checkTitle(WebDriver driver) {
-        WaitElement.waitForElement(productTitle);
-        WebElement itemTitle = driver.findElement(productTitle);
-        return itemTitle.getText();
+    public String checkPrice() {
+        String text = getText(PRODUCT_PRICE);
+        return text.split("\n")[0].replaceAll("[^\\d$.]", "").trim();
     }
 
-    public static String checkPrice(WebDriver driver) {
-        WaitElement.waitForElement(productPrice);
-        WebElement itemPrice = driver.findElement(productPrice);
-        String text = itemPrice.getText();
-        String actualPrice = text.split("\n")[0].replaceAll("[^\\d$.]", "").trim();
-        return  actualPrice;
+    public boolean checkPic() {
+        return isDisplayed(PRODUCT_PIC);
     }
 
-
-
-    public static boolean checkPic(WebDriver driver){
-        try {
-            WaitElement.waitForElement(productPic);
-            WebElement itemPic = driver.findElement(productPic);
-            return itemPic.isDisplayed();
-        } catch ( TimeoutException | NoSuchElementException e){
-            return false;
-        }
+    public void clickAddToCart() {
+        click(ADD_TO_CART);
     }
 
-    public static Boolean clickAdd (WebDriver driver){
-                try {
-                    WaitElement.waitForElement(addToCart);
-                    WebElement add = driver.findElement(addToCart);
-                    add.click();
-                    return true;
-                }catch (TimeoutException | NoSuchElementException e){
-                    return false;
-                }
-            }
-
-
-
-    public static String getAlertText(WebDriver driver) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            String alertText = alert.getText();
-            alert.accept();
-            return alertText;
-        } catch (TimeoutException e) {
-            System.out.println("No alert detected within the timeout");
-            return null;
-        }
+    public boolean isProductDescriptionDisplayed(String productDesc) {
+        By descLocator = By.xpath("//p[contains(text(),'" + productDesc + "')]");
+        return isDisplayed(descLocator);
     }
 
+    public String getAlertText() {
+        return super.getAlertText();
+    }
 }
-
-
-
-
-
-
-

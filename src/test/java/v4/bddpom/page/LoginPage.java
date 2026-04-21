@@ -1,94 +1,53 @@
 package v4.bddpom.page;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
-import helper.WaitElement;
 
-public class LoginPage {
+public class LoginPage extends BasePage {
 
-    // Locators
-    public static By loginButton = By.id("login2");
-    public static By usernameInputText = By.cssSelector("#loginusername");
-    public static By passwordInputText = By.xpath("//*[@id='loginpassword']");
-    public static By submitButton = By.xpath("//button[text()='Log in']");
-    public static By userID = By.xpath("//a[@id='nameofuser']");
+    private static final By LOGIN_BUTTON = By.id("login2");
+    private static final By USERNAME_INPUT = By.cssSelector("#loginusername");
+    private static final By PASSWORD_INPUT = By.xpath("//*[@id='loginpassword']");
+    private static final By SUBMIT_BUTTON = By.xpath("//button[text()='Log in']");
+    private static final By USER_ID = By.id("nameofuser");
 
-    // Check URL
-    public static boolean isUrlCorrect(WebDriver driver, String expectedUrl) {
+    // Method khusus untuk cek URL (dipindahkan dari kode lama)
+    public boolean isUrlCorrect(WebDriver driver, String expectedUrl) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         try {
             wait.until(ExpectedConditions.urlToBe(expectedUrl));
             return true;
-        } catch (TimeoutException e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
-    // Click Login Button
-    public static boolean clickLoginButton(WebDriver driver) {
-        try {
-            WaitElement.waitForElement(loginButton);
-            WebElement loginButtonElement = driver.findElement(loginButton);
-            loginButtonElement.click();
-            return true;
-        } catch (TimeoutException | NoSuchElementException e) {
-            return false;
-        }
+    public void clickLoginButton() {
+        click(LOGIN_BUTTON);
     }
 
-    // Input Username
-    public static String inputUsername(WebDriver driver, String username) {
-        WaitElement.waitForElement(usernameInputText);
-        WebElement usernameField = driver.findElement(usernameInputText);
-        usernameField.clear();
-        usernameField.sendKeys(username);
-        return usernameField.getAttribute("value");
+    public void inputUsername(String username) {
+        sendKeys(USERNAME_INPUT, username);
     }
 
-    // Input Password
-    public static String inputPassword(WebDriver driver, String password) {
-        WaitElement.waitForElement(passwordInputText);
-        WebElement passwordField = driver.findElement(passwordInputText);
-        passwordField.clear();
-        passwordField.sendKeys(password);
-        return passwordField.getAttribute("value");
+    public void inputPassword(String password) {
+        sendKeys(PASSWORD_INPUT, password);
     }
 
-    // Click Submit Button
-    public static boolean clickSubmitButton(WebDriver driver) {
-        try {
-            WaitElement.waitForElement(submitButton);
-            WebElement submitButtonElement = driver.findElement(submitButton);
-            submitButtonElement.click();
-            return true;
-        } catch (TimeoutException | NoSuchElementException e) {
-            return false;
-        }
+    public void clickSubmitButton() {
+        click(SUBMIT_BUTTON);
     }
 
-    // Get Displayed Username
-    public static String getDisplayedUsername(WebDriver driver) {
-        WaitElement.waitForElement(userID);
-        WebElement userIDElement = driver.findElement(userID);
-        String rawText = userIDElement.getText().trim();
-        if (rawText.startsWith("Welcome ")) {
-            rawText = rawText.replace("Welcome ", "");
-        }
-        return rawText;
+    public String getDisplayedUsername() {
+        String text = getText(USER_ID);
+        return text.replace("Welcome ", "");
     }
 
-    public static String getAlertText(WebDriver driver) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            String alertText = alert.getText();
-            alert.accept();
-            return alertText;
-        } catch (TimeoutException e) {
-            System.out.println("No alert detected within the timeout");
-            return null;
-        }
+    public String getAlertText() {
+        return super.getAlertText();
     }
 }
