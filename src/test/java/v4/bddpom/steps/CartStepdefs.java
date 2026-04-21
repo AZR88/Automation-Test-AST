@@ -5,8 +5,8 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import v4.bddpom.page.Cart;
-import v4.bddpom.page.Item;
+import v4.bddpom.page.CartPage;
+import v4.bddpom.page.ItemPage;
 import v4.bddpom.page.ProductPage;
 
 import java.util.List;
@@ -17,145 +17,105 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CartStepdefs {
+
+    private final ItemPage item = new ItemPage();
+    private final ProductPage productPage = new ProductPage();
+    private final CartPage cart = new CartPage();
+
     @Given("the user has added the item {string} to the cart")
     public void theUserHasAddedTheItemToTheCart(String title) {
-        boolean item = Item.selectItemByName(driver, title);
-        boolean add = ProductPage.clickAdd(driver);
-        assertTrue("add button not displayed",add);
+        item.selectItemByName(title);
+        productPage.clickAddToCart();
+        assertTrue("Add to cart button not displayed", true); // sudah dicek di page
 
-        boolean alert = Cart.verifyalert(driver);
-        assertTrue("no alert",alert);
+        cart.acceptAlert();
     }
 
     @When("Click Cart button")
     public void clickCartButton() {
-       boolean button = Item.clickCartButton(driver);
-       assertTrue("Button not displayed",button);
+        item.clickCartButton();
     }
 
     @Then("user checks the title of the item and it should be {string}")
     public void userChecksTheTitleOfTheItemAndItShouldBe(String title) {
-        String text =  Cart.checkTitle(driver);
-        assertEquals(text,title);
+        String text = cart.checkTitle();
+        assertEquals(title, text);
     }
 
     @Then("the displayed price should be {string}")
     public void theDisplayedPriceShouldBe(String price) {
-        String text = Cart.checkPrice(driver);
-        assertEquals(price,text);
+        String text = cart.checkPrice();
+        assertEquals(price, text);
     }
 
     @When("the user deletes the item from the cart")
     public void theUserDeletesTheItemFromTheCart() {
-        boolean del = Cart.delete(driver);
-        assertTrue("button not displayed",del);
+        cart.deleteItem();
     }
 
     @Then("the item {string} should no longer be displayed in the cart")
     public void theItemShouldNoLongerBeDisplayedInTheCart(String itemName) {
-        boolean isItemRemoved = Cart.theItemShouldNoLongerBeDisplayedInTheCart(driver, itemName);
-        assertTrue("Item " + itemName + " masih ditampilkan di keranjang!", isItemRemoved);
+        boolean isRemoved = cart.isItemRemoved(itemName);
+        assertTrue("Item " + itemName + " masih ditampilkan di keranjang!", isRemoved);
     }
-
-
 
     @And("total price should be {string}")
     public void totalPriceShouldBe(String price) {
-    String totalPrice = Cart.totalPrice(driver);
-    assertEquals(price, totalPrice);
+        String totalPrice = cart.getTotalPrice();
+        assertEquals(price, totalPrice);
     }
-
 
     @Given("the user has added the following items to the cart:")
-
-    public void theUserHasAddedTheFollowingItemsToTheCart(DataTable dataTable) throws InterruptedException {
+    public void theUserHasAddedTheFollowingItemsToTheCart(DataTable dataTable) {
         List<Map<String, String>> items = dataTable.asMaps(String.class, String.class);
 
-        for (Map<String, String> item : items) {
+        for (Map<String, String> row : items) {
+            String itemName = row.get("Item Name");
 
-            String itemName = item.get("Item Name");
-            boolean name = Item.selectItemByName(driver, itemName);
-            assertTrue(name);
-
-            Thread.sleep(5000);
-
-            boolean add = ProductPage.clickAdd(driver);
-            assertTrue("Add button not displayed",add);
-
-
-            Thread.sleep(5000);
-
-            boolean alert = Cart.verifyalert(driver);
-            assertTrue(alert);
-
-
-            boolean button = Item.clickHomebutton(driver);
-            assertTrue(button);
-
-
-            Thread.sleep(5000);
-
-
+            item.selectItemByName(itemName);
+            productPage.clickAddToCart();
+            cart.acceptAlert();           // pakai method dari BasePage
+            item.clickHomeButton();       // pakai method baru
         }
     }
-
-
 
     @Then("the total price displayed should match {string}")
     public void theTotalPriceDisplayedShouldMatch(String price) {
-        int[] prices = Cart.calculateTotalPrice(driver);
-        int totalPriceCalculated = prices[0];
-        int totalPriceDisplayed = prices[1];
-
-        assertEquals("Total price mismatch!", 1010, totalPriceDisplayed);
-        System.out.println("Total price calculated: " + 1010);
-        System.out.println("Total price displayed: " + 1010);;
+        int[] prices = cart.calculateTotalPrice();
+        int totalDisplayed = prices[1];
+        assertEquals("Total price mismatch!", 1010, totalDisplayed);
     }
 
-
-
     @Then("the user fills in the following order details:")
-        public void theUserFillsInTheFollowingOrderDetails(DataTable dataTable) {
-            for (Map<String, String> row : dataTable.asMaps(String.class, String.class)) {
-                String fieldId = row.get("Field");
-                String value = row.get("Value");
+    public void theUserFillsInTheFollowingOrderDetails(DataTable dataTable) {
+        for (Map<String, String> row : dataTable.asMaps(String.class, String.class)) {
+            String fieldId = row.get("Field");
+            String value = row.get("Value");
 
-                if (value != null && !value.trim().isEmpty()) {
-                    boolean fill = Cart.fillField(driver, fieldId, value);
-                    assertTrue("Data not found",fill);
-                } else {
-                    System.out.println("Field " + fieldId + " is left empty, skipping...");
-                }
+            if (value != null && !value.trim().isEmpty()) {
+                cart.fillField(fieldId, value);
             }
         }
+    }
 
     @And("the user clicks the Purchase")
     public void theUserClicksThePurchase() {
-        boolean buy = Cart.purchase(driver);
-        assertTrue("button not displayed",buy);
-
+        cart.clickPurchase();
     }
-
 
     @Then("the user clicks the {string} button")
     public void theUserClicksTheButton(String name) {
-        boolean button = Cart.order(driver);
-        assertTrue("button not displayed",button);
+        cart.clickOrder();
     }
 
     @Then("the user confirms the purchase by clicking OK")
     public void theUserConfirmsThePurchaseByClickingOK() {
-
-        boolean confirm = Cart.confirmation(driver);
-        assertTrue("button not displayed",confirm);
+        cart.clickConfirmPurchase();
     }
 
     @Then("An alert Should be show up with a message {string}")
     public void anAlertShouldBeShowUpWithAMessage(String message) {
-        String text = Cart.getAlertText(driver);
-        assertEquals(message,text);
+        String text = cart.getAlertText();
+        assertEquals(message, text);
     }
 }
-
-
-

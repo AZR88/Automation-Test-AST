@@ -2,12 +2,10 @@ package v4.bddpom.steps;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import org.openqa.selenium.WebDriver;
 import static helper.WebHelper.startDriver;
 import static helper.WebHelper.tearDown;
 
 public class hooks {
-    public static WebDriver driver;
 
     @Before
     public void beforeTest() {

@@ -11,41 +11,42 @@ import static helper.WebHelper.driver;
 
 public class LoginStep {
 
+    private final LoginPage loginPage = new LoginPage();
+
     @Given("user is on homepage {string}")
     public void userIsOnHomepage(String expectedUrl) {
-        boolean isUrlCorrect = LoginPage.isUrlCorrect(driver, expectedUrl);
-        Assert.assertTrue("Incorrect URL!", isUrlCorrect);
+        Assert.assertTrue("URL tidak sesuai!", loginPage.isUrlCorrect(driver, expectedUrl));
     }
 
     @When("user click Login button")
     public void userClicksLoginButton() {
-        LoginPage.clickLoginButton(driver);
+        loginPage.clickLoginButton();
     }
 
     @And("user input username with {string}")
     public void userInputsUsernameWith(String username) {
-        LoginPage.inputUsername(driver, username);
+        loginPage.inputUsername(username);
     }
 
     @And("user input password with {string}")
     public void userInputsPasswordWith(String password) {
-        LoginPage.inputPassword(driver, password);
+        loginPage.inputPassword(password);
     }
 
     @And("user click submit")
     public void userClicksSubmitButton() {
-        LoginPage.clickSubmitButton(driver);
+        loginPage.clickSubmitButton();
     }
 
     @Then("user redirect to home page with {string} username displayed")
     public void userRedirectedToHomePageWithUsernameDisplayed(String expectedUsername) {
-        String actualUsername = LoginPage.getDisplayedUsername(driver);
-        Assert.assertEquals("Username is not equals to account!", expectedUsername, actualUsername);
+        String actualUsername = loginPage.getDisplayedUsername();
+        Assert.assertEquals("Username tidak sesuai!", expectedUsername, actualUsername);
     }
 
     @Then("show invalid login notification {string}")
     public void showInvalidLoginNotification(String expectedMessage) {
-        String actualMessage = LoginPage.getAlertText(driver);
-        Assert.assertEquals("Alert message mismatch!", expectedMessage, actualMessage);
+        String actualMessage = loginPage.getAlertText();
+        Assert.assertEquals("Alert message tidak sesuai!", expectedMessage, actualMessage);
     }
 }
