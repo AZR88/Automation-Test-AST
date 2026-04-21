@@ -3,11 +3,17 @@ package v1.Linear;
 import helper.WebHelper;
 import helper.WaitElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import java.time.Duration;
+
 import static helper.WebHelper.driver;
 
 public class LoginTest {
@@ -20,110 +26,93 @@ public class LoginTest {
 
     @Test
     public void testLoginValid() {
-        // Step 1
         WaitElement.waitForElement(By.id("login2"));
         driver.findElement(By.id("login2")).click();
 
-        // Step 2
         WaitElement.waitForElement(By.cssSelector("#loginusername"));
         WebElement userField = driver.findElement(By.cssSelector("#loginusername"));
         userField.clear();
         userField.sendKeys("Beta123");
 
-        // Step 3
         WaitElement.waitForElement(By.xpath("//*[@id='loginpassword']"));
         WebElement passField = driver.findElement(By.xpath("//*[@id='loginpassword']"));
         passField.clear();
         passField.sendKeys("123");
 
-        // Step 4
         driver.findElement(By.xpath("//button[text()='Log in']")).click();
 
-        // Step 5
-        WaitElement.waitForElement(By.xpath("//a[@id='nameofuser']"));
-        String actualUser = driver.findElement(By.xpath("//a[@id='nameofuser']")).getText();
-        Assert.assertTrue(actualUser.contains("Beta123"));
+        WaitElement.waitForElement(By.id("nameofuser"));
+        String actualUser = driver.findElement(By.id("nameofuser")).getText();
+        Assert.assertTrue(actualUser.contains("Beta123"), "Valid login gagal");
     }
 
     @Test
-    public void testLoginIvalidUsername() {
-        // Step 1
+    public void testLoginInvalidUsername() {
         WaitElement.waitForElement(By.id("login2"));
         driver.findElement(By.id("login2")).click();
 
-        // Step 2
         WaitElement.waitForElement(By.cssSelector("#loginusername"));
         WebElement userField = driver.findElement(By.cssSelector("#loginusername"));
         userField.clear();
         userField.sendKeys("adawqrsd");
 
-        // Step 3
         WaitElement.waitForElement(By.xpath("//*[@id='loginpassword']"));
         WebElement passField = driver.findElement(By.xpath("//*[@id='loginpassword']"));
         passField.clear();
         passField.sendKeys("222");
 
-        // Step 4
         driver.findElement(By.xpath("//button[text()='Log in']")).click();
 
-        // Step 5
-        WaitElement.waitForElement(By.xpath("//a[@id='nameofuser']"));
-        String actualUser = driver.findElement(By.xpath("//a[@id='nameofuser']")).getText();
-        Assert.assertTrue(actualUser.contains("Beta123"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        Assert.assertEquals(alert.getText(), "User does not exist.");
+        alert.accept();
     }
 
     @Test
-    public void testLoginIvalidPassword() {
-        // Step 1
+    public void testLoginInvalidPassword() {
         WaitElement.waitForElement(By.id("login2"));
         driver.findElement(By.id("login2")).click();
 
-        // Step 2
         WaitElement.waitForElement(By.cssSelector("#loginusername"));
         WebElement userField = driver.findElement(By.cssSelector("#loginusername"));
         userField.clear();
         userField.sendKeys("Beta123");
 
-        // Step 3
         WaitElement.waitForElement(By.xpath("//*[@id='loginpassword']"));
         WebElement passField = driver.findElement(By.xpath("//*[@id='loginpassword']"));
         passField.clear();
         passField.sendKeys("222");
 
-        // Step 4
         driver.findElement(By.xpath("//button[text()='Log in']")).click();
 
-        // Step 5
-        WaitElement.waitForElement(By.xpath("//a[@id='nameofuser']"));
-        String actualUser = driver.findElement(By.xpath("//a[@id='nameofuser']")).getText();
-        Assert.assertTrue(actualUser.contains("Beta123"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        Assert.assertEquals(alert.getText(), "Wrong password.");
+        alert.accept();
     }
 
     @Test
     public void testLoginEmptyUsernamePassword() {
-        // Step 1
         WaitElement.waitForElement(By.id("login2"));
         driver.findElement(By.id("login2")).click();
 
-        // Step 2
         WaitElement.waitForElement(By.cssSelector("#loginusername"));
         WebElement userField = driver.findElement(By.cssSelector("#loginusername"));
         userField.clear();
         userField.sendKeys("");
 
-        // Step 3
         WaitElement.waitForElement(By.xpath("//*[@id='loginpassword']"));
         WebElement passField = driver.findElement(By.xpath("//*[@id='loginpassword']"));
         passField.clear();
         passField.sendKeys("");
 
-        // Step 4
         driver.findElement(By.xpath("//button[text()='Log in']")).click();
 
-        // Step 5
-        WaitElement.waitForElement(By.xpath("//a[@id='nameofuser']"));
-        String actualUser = driver.findElement(By.xpath("//a[@id='nameofuser']")).getText();
-        Assert.assertTrue(actualUser.contains("Beta123"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        Assert.assertEquals(alert.getText(), "Please fill out Username and Password.");
+        alert.accept();
     }
 
     @AfterMethod

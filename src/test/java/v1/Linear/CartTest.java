@@ -8,8 +8,10 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import java.time.Duration;
 import java.util.List;
+
 import static helper.WebHelper.driver;
 
 public class CartTest {
@@ -20,58 +22,67 @@ public class CartTest {
         driver.get("https://www.demoblaze.com/");
     }
 
-    // TEST 1: Verify Price and Title
     @Test(priority = 1)
     public void testVerifyPriceAndTitle() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Add to cart']"))).click();
         wait.until(ExpectedConditions.alertIsPresent()).accept();
+
         driver.findElement(By.xpath("//a[text()='Cart']")).click();
 
-        String actualTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tbody[@id='tbodyid']//tr[@class='success']/td[2]"))).getText();
+        String actualTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//tbody[@id='tbodyid']//tr[@class='success']/td[2]"))).getText();
+
         String actualPrice = driver.findElement(By.xpath("//tbody[@id='tbodyid']//tr/td[3]")).getText();
 
         Assert.assertEquals(actualTitle, "Samsung galaxy s6");
         Assert.assertEquals(actualPrice, "360");
     }
 
-    // TEST 2: Delete Item
     @Test(priority = 2)
     public void testDeleteItemFromCart() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Add to cart']"))).click();
         wait.until(ExpectedConditions.alertIsPresent()).accept();
+
         driver.findElement(By.xpath("//a[text()='Cart']")).click();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Delete']"))).click();
-        boolean isRemoved = wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//td[text()='Samsung galaxy s6']")));
-        Assert.assertTrue(isRemoved);
+
+        boolean isRemoved = wait.until(ExpectedConditions.invisibilityOfElementLocated(
+                By.xpath("//td[text()='Samsung galaxy s6']")));
+
+        Assert.assertTrue(isRemoved, "Item masih muncul di cart setelah dihapus");
     }
 
-    // TEST 3: Verify Total Price
     @Test(priority = 3)
     public void testVerifyTotalPrice() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Item 1
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
+        // Add Samsung galaxy s6
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Add to cart']"))).click();
         wait.until(ExpectedConditions.alertIsPresent()).accept();
         driver.findElement(By.xpath("//li[@class='nav-item active']//a[@class='nav-link']")).click();
 
-        // Item 2
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(), 'Nexus 6')]"))).click();
+        // Add Nexus 6
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(), 'Nexus 6')]"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Add to cart']"))).click();
         wait.until(ExpectedConditions.alertIsPresent()).accept();
 
         driver.findElement(By.xpath("//a[text()='Cart']")).click();
 
-        List<WebElement> rows = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//tbody[@id='tbodyid']//tr/td[3]")));
+        List<WebElement> priceElements = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.xpath("//tbody[@id='tbodyid']//tr/td[3]")));
+
         int totalCalculated = 0;
-        for (WebElement row : rows) {
-            totalCalculated += Integer.parseInt(row.getText().replaceAll("[^0-9]", ""));
+        for (WebElement el : priceElements) {
+            String text = el.getText().replaceAll("[^0-9]", "");
+            if (!text.isEmpty()) totalCalculated += Integer.parseInt(text);
         }
 
         String totalDisplayedText = driver.findElement(By.id("totalp")).getText();
@@ -81,17 +92,18 @@ public class CartTest {
         Assert.assertEquals(totalCalculated, totalDisplayed);
     }
 
-    // TEST 4: Purchase Valid
     @Test(priority = 4)
     public void testCompletePurchaseValid() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Add to cart']"))).click();
         wait.until(ExpectedConditions.alertIsPresent()).accept();
-        driver.findElement(By.xpath("//a[text()='Cart']")).click();
 
+        driver.findElement(By.xpath("//a[text()='Cart']")).click();
         driver.findElement(By.xpath("//button[text()='Place Order']")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys("Agus");
+
+        driver.findElement(By.id("name")).sendKeys("Agus");
         driver.findElement(By.id("country")).sendKeys("USA");
         driver.findElement(By.id("city")).sendKeys("New York");
         driver.findElement(By.id("card")).sendKeys("1234567890123456");
@@ -102,17 +114,19 @@ public class CartTest {
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='OK']"))).click();
     }
 
-    // TEST 5: Purchase Invalid
     @Test(priority = 5)
     public void testCompletePurchaseInvalid() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Add to cart']"))).click();
         wait.until(ExpectedConditions.alertIsPresent()).accept();
-        driver.findElement(By.xpath("//a[text()='Cart']")).click();
 
+        driver.findElement(By.xpath("//a[text()='Cart']")).click();
         driver.findElement(By.xpath("//button[text()='Place Order']")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).clear();
+
+        // Kosongkan field yang wajib
+        driver.findElement(By.id("name")).clear();
         driver.findElement(By.id("card")).clear();
 
         driver.findElement(By.xpath("//button[text()='Purchase']")).click();
