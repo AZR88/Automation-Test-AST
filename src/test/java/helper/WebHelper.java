@@ -63,7 +63,6 @@ public class WebHelper {
                 throw new IllegalStateException("WebDriver initialization failed for browser: " + browser);
             }
 
-            // Set konfigurasi umum untuk WebDriver
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
             driver.get("https://www.demoblaze.com/");
         } catch (Exception e) {
