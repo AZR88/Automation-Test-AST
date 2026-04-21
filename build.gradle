@@ -33,10 +33,10 @@ dependencies {
     testImplementation 'org.slf4j:slf4j-simple:2.0.7'
 }
 
-// Konfigurasi Task untuk Eksekusi Terisolasi
+
 def tags = findProperty('tags') ?: 'not @ignore'
 
-// Task untuk BDD Saja (Varian 3)
+
 task runV3BDD(type: JavaExec) {
     group = "verification"
     mainClass = "io.cucumber.core.cli.Main"
@@ -49,7 +49,7 @@ task runV3BDD(type: JavaExec) {
     ]
 }
 
-// Task untuk BDD + POM (Varian 4)
+
 task runV4BDDPOM(type: JavaExec) {
     group = "verification"
     mainClass = "io.cucumber.core.cli.Main"
@@ -62,7 +62,7 @@ task runV4BDDPOM(type: JavaExec) {
     ]
 }
 
-// Menjalankan TestNG untuk Varian 1 & 2
+
 test {
     useTestNG()
     scanForTestClasses = true
