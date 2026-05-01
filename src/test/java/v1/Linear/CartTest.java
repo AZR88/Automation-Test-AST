@@ -63,13 +63,13 @@ public class CartTest {
     public void testVerifyTotalPrice() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Add Samsung galaxy s6
+
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(), 'Samsung galaxy s6')]"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Add to cart']"))).click();
         wait.until(ExpectedConditions.alertIsPresent()).accept();
         driver.findElement(By.xpath("//li[@class='nav-item active']//a[@class='nav-link']")).click();
 
-        // Add Nexus 6
+
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(), 'Nexus 6')]"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Add to cart']"))).click();
         wait.until(ExpectedConditions.alertIsPresent()).accept();
@@ -125,7 +125,6 @@ public class CartTest {
         driver.findElement(By.xpath("//a[text()='Cart']")).click();
         driver.findElement(By.xpath("//button[text()='Place Order']")).click();
 
-        // Kosongkan field yang wajib
         driver.findElement(By.id("name")).clear();
         driver.findElement(By.id("card")).clear();
 
