@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class Item {
+public class Item extends BasePage {
     private static By homeButton = By.xpath("//li[@class='nav-item active']//a[@class='nav-link']");
     private static By cartButton = By.xpath("(//a[normalize-space()='Cart'])");
 
@@ -15,9 +15,7 @@ public class Item {
 
     public static boolean clickCartButton(WebDriver driver){
         try {
-            WaitElement.waitForElement(cartButton);
-            WebElement element = driver.findElement(cartButton);
-            element.click();
+            click(driver, cartButton);
             return true;
         }catch (TimeoutException | NoSuchElementException e){
             return false;
@@ -26,9 +24,7 @@ public class Item {
 
     public static boolean clickHomebutton(WebDriver driver){
         try {
-            WaitElement.waitForElement(cartButton);
-            WebElement element = driver.findElement(homeButton);
-            element.click();
+            click(driver, homeButton);
             return true;
         }catch (TimeoutException | NoSuchElementException e){
             return false;

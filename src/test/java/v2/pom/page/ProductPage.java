@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class ProductPage {
+public class ProductPage extends BasePage {
 
     public static By productPic = By.xpath("//div[@id='imgp']//img");
     public static By productTitle = By.xpath("//h2[@class='name']");
@@ -28,15 +28,11 @@ public class ProductPage {
 
 
     public static String  checkTitle(WebDriver driver) {
-        WaitElement.waitForElement(productTitle);
-        WebElement itemTitle = driver.findElement(productTitle);
-        return itemTitle.getText();
+        return getText(driver, productTitle);
     }
 
     public static String checkPrice(WebDriver driver) {
-        WaitElement.waitForElement(productPrice);
-        WebElement itemPrice = driver.findElement(productPrice);
-        String text = itemPrice.getText();
+        String text = getText(driver, productPrice);
         String actualPrice = text.split("\n")[0].replaceAll("[^\\d$.]", "").trim();
         return  actualPrice;
     }
@@ -55,9 +51,7 @@ public class ProductPage {
 
     public static Boolean clickAdd (WebDriver driver){
                 try {
-                    WaitElement.waitForElement(addToCart);
-                    WebElement add = driver.findElement(addToCart);
-                    add.click();
+                    click(driver, addToCart);
                     return true;
                 }catch (TimeoutException | NoSuchElementException e){
                     return false;
@@ -67,23 +61,7 @@ public class ProductPage {
 
 
     public static String getAlertText(WebDriver driver) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            String alertText = alert.getText();
-            alert.accept();
-            return alertText;
-        } catch (TimeoutException e) {
-            System.out.println("No alert detected within the timeout");
-            return null;
-        }
+        return BasePage.getAlertText(driver);
     }
 
 }
-
-
-
-
-
-
-

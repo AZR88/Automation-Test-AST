@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.util.List;
 
 
-public class Cart {
+public class Cart extends BasePage {
     public static By cartitem = By.xpath("//tbody[@id='tbodyid']//tr[@class='success']/td[2]");
     public static By deleteItem = By.xpath("//tbody[@id='tbodyid']//tr[@class='success']//a[contains(text(),'Delete')]");
     public static By TotalPrice = By.id("totalp");
@@ -20,9 +20,7 @@ public class Cart {
 
     public static boolean order(WebDriver driver){
         try {
-            WaitElement.waitForElement(orderButton);
-            WebElement order = driver.findElement(orderButton);
-            order.click();
+            click(driver, orderButton);
             return true;
         }catch (TimeoutException | NoSuchElementException e){
             return false;
@@ -32,10 +30,7 @@ public class Cart {
 
     public static boolean confirmation(WebDriver driver){
         try {
-            WaitElement.waitForElement(confirmPurchase);
-
-            WebElement confirm = driver.findElement(confirmPurchase);
-            confirm.click();
+            click(driver, confirmPurchase);
             return true;
         }catch (TimeoutException | NoSuchElementException e){
             return false;
@@ -45,25 +40,16 @@ public class Cart {
 
     public static String checkPrice(WebDriver driver){
 
-        WaitElement.waitForElement(allPrice);
-        WebElement price = driver.findElement(allPrice);
-        String text= price.getText();
-        return text;
+        return getText(driver, allPrice);
     }
 
     public static String checkTitle(WebDriver driver){
-        WaitElement.waitForElement(cartitem);
-        WebElement title = driver.findElement(cartitem);
-        String text = title.getText();
-        return text;
+        return getText(driver, cartitem);
     }
 
     public static boolean delete(WebDriver driver){
         try {
-
-            WaitElement.waitForElement(deleteItem);
-            WebElement del = driver.findElement(deleteItem);
-            del.click();
+            click(driver, deleteItem);
             return true;
         }catch (TimeoutException|NoSuchElementException e){
             return false;
@@ -72,10 +58,7 @@ public class Cart {
 
     public static boolean purchase (WebDriver driver){
             try {
-                WaitElement.waitForElement(purchasebutton);
-
-                WebElement buy = driver.findElement(purchasebutton);
-                buy.click();
+                click(driver, purchasebutton);
                 return true;
             } catch (TimeoutException| NoSuchElementException e){
                 return false;
@@ -85,10 +68,7 @@ public class Cart {
 
     public static boolean fillField(WebDriver driver, String fieldId, String fieldValue) {
         try {
-            WaitElement.waitForElement(By.id(fieldId));
-            WebElement fieldElement = driver.findElement(By.id(fieldId));
-            fieldElement.clear();
-            fieldElement.sendKeys(fieldValue);
+            sendKeys(driver, By.id(fieldId), fieldValue);
             return true;
         } catch (TimeoutException| NoSuchElementException e){
             return false;
@@ -100,10 +80,7 @@ public class Cart {
     public  static String  totalPrice (WebDriver driver)
     {
 
-        WaitElement.waitForElement(TotalPrice);
-        WebElement tp = driver.findElement(TotalPrice);
-        String price = tp.getText();
-        return price;
+        return getText(driver, TotalPrice);
     }
 
     public static boolean theItemShouldNoLongerBeDisplayedInTheCart(WebDriver driver, String itemName) {
@@ -140,30 +117,11 @@ public class Cart {
         }
 
         public static boolean verifyalert (WebDriver driver) {
-            try {
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-                Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-                alert.accept();
-                return true;
-            } catch (TimeoutException e) {
-                System.out.println("No alert detected within the timeout.");
-                return false;
-            }
+            return acceptAlert(driver);
         }
 
     public static String getAlertText(WebDriver driver) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            String alertText = alert.getText();
-            alert.accept();
-            return alertText;
-        } catch (TimeoutException e) {
-            System.out.println("No alert detected within the timeout");
-            return null;
-        }
+        return BasePage.getAlertText(driver);
     }
 
 }
-
-

@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class LoginPage {
+public class LoginPage extends BasePage {
 
     // Locators
     public static By loginButton = By.id("login2");
@@ -16,7 +16,7 @@ public class LoginPage {
     public static By submitButton = By.xpath("//button[text()='Log in']");
     public static By userID = By.xpath("//a[@id='nameofuser']");
 
-    // Check URL
+
     public static boolean isUrlCorrect(WebDriver driver, String expectedUrl) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         try {
@@ -27,53 +27,41 @@ public class LoginPage {
         }
     }
 
-    // Click Login Button
+
     public static boolean clickLoginButton(WebDriver driver) {
         try {
-            WaitElement.waitForElement(loginButton);
-            WebElement loginButtonElement = driver.findElement(loginButton);
-            loginButtonElement.click();
+            click(driver, loginButton);
             return true;
         } catch (TimeoutException | NoSuchElementException e) {
             return false;
         }
     }
 
-    // Input Username
+
     public static String inputUsername(WebDriver driver, String username) {
-        WaitElement.waitForElement(usernameInputText);
-        WebElement usernameField = driver.findElement(usernameInputText);
-        usernameField.clear();
-        usernameField.sendKeys(username);
-        return usernameField.getAttribute("value");
+        sendKeys(driver, usernameInputText, username);
+        return getInputValue(driver, usernameInputText);
     }
 
-    // Input Password
+
     public static String inputPassword(WebDriver driver, String password) {
-        WaitElement.waitForElement(passwordInputText);
-        WebElement passwordField = driver.findElement(passwordInputText);
-        passwordField.clear();
-        passwordField.sendKeys(password);
-        return passwordField.getAttribute("value");
+        sendKeys(driver, passwordInputText, password);
+        return getInputValue(driver, passwordInputText);
     }
 
-    // Click Submit Button
+
     public static boolean clickSubmitButton(WebDriver driver) {
         try {
-            WaitElement.waitForElement(submitButton);
-            WebElement submitButtonElement = driver.findElement(submitButton);
-            submitButtonElement.click();
+            click(driver, submitButton);
             return true;
         } catch (TimeoutException | NoSuchElementException e) {
             return false;
         }
     }
 
-    // Get Displayed Username
+
     public static String getDisplayedUsername(WebDriver driver) {
-        WaitElement.waitForElement(userID);
-        WebElement userIDElement = driver.findElement(userID);
-        String rawText = userIDElement.getText().trim();
+        String rawText = getText(driver, userID);
         if (rawText.startsWith("Welcome ")) {
             rawText = rawText.replace("Welcome ", "");
         }
@@ -81,15 +69,6 @@ public class LoginPage {
     }
 
     public static String getAlertText(WebDriver driver) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-            String alertText = alert.getText();
-            alert.accept();
-            return alertText;
-        } catch (TimeoutException e) {
-            System.out.println("No alert detected within the timeout");
-            return null;
-        }
+        return BasePage.getAlertText(driver);
     }
 }
