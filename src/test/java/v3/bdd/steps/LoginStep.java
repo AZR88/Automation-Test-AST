@@ -42,4 +42,10 @@ public class LoginStep extends BaseStep {
         String actual = getText(By.id("nameofuser")).replace("Welcome ", "");
         Assert.assertEquals("Username mismatch!", expectedUsername, actual);
     }
+
+    @Then("show invalid login notification {string}")
+    public void showInvalidLoginNotification(String expectedMessage) {
+        String actualMessage = getAlertText();
+        Assert.assertEquals("Alert message mismatch!", expectedMessage, actualMessage);
+    }
 }
