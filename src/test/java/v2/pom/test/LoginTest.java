@@ -1,7 +1,7 @@
 package v2.pom.test;
 
 import helper.WebHelper;
-import v4.bddpom.page.LoginPage; // Menggunakan Page Object yang sudah ada
+import v2.pom.page.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -48,6 +48,17 @@ public class LoginTest {
 
         String alertMsg = LoginPage.getAlertText(driver);
         Assert.assertEquals(alertMsg, "Please fill out Username and Password.");
+    }
+
+    @Test(priority = 4)
+    public void testLoginInvalidPassword() {
+        LoginPage.clickLoginButton(driver);
+        LoginPage.inputUsername(driver, "Beta123");
+        LoginPage.inputPassword(driver, "222");
+        LoginPage.clickSubmitButton(driver);
+
+        String alertMsg = LoginPage.getAlertText(driver);
+        Assert.assertEquals(alertMsg, "Wrong password.");
     }
 
     @AfterMethod

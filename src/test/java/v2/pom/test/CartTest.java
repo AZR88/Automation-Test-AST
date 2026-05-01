@@ -95,7 +95,6 @@ public class CartTest {
 
         Cart.order(driver);
 
-        // Mengosongkan field wajib sesuai skenario Gherkin
         Cart.fillField(driver, "name", "");
         Cart.fillField(driver, "country", "USA");
         Cart.fillField(driver, "city", "");
