@@ -38,6 +38,7 @@ Feature: Shopping Cart Functionality
       | month      | December         |
       | year       | 2025             |
     And the user inputs the promo code "DISC50"
+    And the user clicks the Apply
     And the user clicks the Purchase
     And the user confirms the purchase by clicking OK
 
@@ -55,5 +56,6 @@ Feature: Shopping Cart Functionality
       | month      | December   |
       | year       | 2025       |
     And the user inputs the promo code "DISC50"
+    And the user clicks the Apply
     And the user clicks the Purchase
     Then An alert Should be show up with a message "Please fill out Name and Creditcard."
