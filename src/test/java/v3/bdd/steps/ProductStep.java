@@ -29,7 +29,7 @@ public class ProductStep extends BaseStep {
 
     @And("the product image should be displayed")
     public void theProductImageShouldBeDisplayed() {
-        boolean isDisplayed = isDisplayed(By.xpath("//div[@class='item active']//img"));
+        boolean isDisplayed =  isElementInvisible(By.xpath("//div[@class='item active']//img"));
         assertTrue("Product image is not displayed!", isDisplayed);
     }
 

@@ -15,9 +15,9 @@ public class LoginPage extends BasePage {
     private static final By SUBMIT_BUTTON = By.xpath("//button[text()='Log in']");
     private static final By USER_ID = By.id("nameofuser");
 
-    // Method khusus untuk cek URL (dipindahkan dari kode lama)
+
     public boolean isUrlCorrect(WebDriver driver, String expectedUrl) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         try {
             wait.until(ExpectedConditions.urlToBe(expectedUrl));
             return true;

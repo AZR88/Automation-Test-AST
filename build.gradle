@@ -17,7 +17,7 @@ java {
 
 dependencies {
     // Core Selenium & Driver Management
-    implementation 'org.seleniumhq.selenium:selenium-java:4.17.0'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.43.0'
     implementation 'io.github.bonigarcia:webdrivermanager:5.5.3'
 
     // Cucumber (Varian 3 & 4)
