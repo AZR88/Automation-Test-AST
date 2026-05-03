@@ -17,6 +17,7 @@ public class CartPage_I5 extends BasePage {
     private static final By PROMO_INPUT = By.id("promo");
     private static final By ALL_PRICE = By.xpath("//tbody[@id='tbodyid']//tr/td[3]");
     private static final By CONFIRM_PURCHASE = By.xpath("//div[@class='sa-confirm-button-container']");
+    private static final By APPLY = By.id("applu")
 
     public void clickOrder() {
         click(ORDER_BUTTON);
@@ -28,6 +29,10 @@ public class CartPage_I5 extends BasePage {
 
     public void inputPromo(String promoCode) {
         sendKeys(PROMO_INPUT, promoCode);
+    }
+
+    public void clickApply (){
+        click(APPLY);
     }
 
     public void clickConfirmPurchase() {
