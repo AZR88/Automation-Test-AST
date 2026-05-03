@@ -16,7 +16,6 @@ public class Cart_I6 extends BasePage {
     public static By TotalPrice = By.id("totalp");
     public static By orderButton =  By.xpath("//button[text()='Place Order']");
     public static By purchasebutton = By.xpath("//button[text()='Purchase']");
-    public static By promo = By.id("promo");
     public static By allPrice = By.xpath("//tbody[@id='tbodyid']//tr/td[3]");
     public static By confirmPurchase = By.xpath("//div[@class='sa-confirm-button-container']");
 
@@ -67,14 +66,6 @@ public class Cart_I6 extends BasePage {
             }
     }
 
-    public static boolean inputPromo(WebDriver driver, String promoCode) {
-        try {
-            sendKeys(driver, promo, promoCode);
-            return true;
-        } catch (TimeoutException | NoSuchElementException e) {
-            return false;
-        }
-    }
 
     public static boolean fillField(WebDriver driver, String fieldId, String fieldValue) {
         try {

@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import v2.pom.page.Cart_I5;
+import v2.pom.page.Cart;
 import v2.pom.page.Item;
 import v2.pom.page.ProductPage;
 
@@ -23,22 +23,22 @@ public class CartTest_I5 {
     public void testVerifyPriceAndTitle() {
         Item.selectItemByName(driver, "Samsung galaxy s6");
         ProductPage.clickAdd(driver);
-        Cart_I5.verifyalert(driver);
+        Cart.verifyalert(driver);
         Item.clickCartButton(driver);
 
-        Assert.assertEquals(Cart_I5.checkTitle(driver), "Samsung galaxy s6", "Judul item tidak sesuai!");
-        Assert.assertEquals(Cart_I5.checkPrice(driver), "360", "Harga item tidak sesuai!");
+        Assert.assertEquals(Cart.checkTitle(driver), "Samsung galaxy s6", "Judul item tidak sesuai!");
+        Assert.assertEquals(Cart.checkPrice(driver), "360", "Harga item tidak sesuai!");
     }
 
     @Test(priority = 2, description = "Scenario: Delete an item from the cart")
     public void testDeleteItemFromCart() {
         Item.selectItemByName(driver, "Samsung galaxy s6");
         ProductPage.clickAdd(driver);
-        Cart_I5.verifyalert(driver);
+        Cart.verifyalert(driver);
         Item.clickCartButton(driver);
 
-        Cart_I5.delete(driver);
-        boolean isRemoved = Cart_I5.theItemShouldNoLongerBeDisplayedInTheCart(driver, "Samsung galaxy s6");
+        Cart.delete(driver);
+        boolean isRemoved = Cart.theItemShouldNoLongerBeDisplayedInTheCart(driver, "Samsung galaxy s6");
         Assert.assertTrue(isRemoved, "Item 'Samsung galaxy s6' masih terlihat setelah dihapus!");
     }
 
@@ -47,18 +47,17 @@ public class CartTest_I5 {
         // Tambah item 1
         Item.selectItemByName(driver, "Samsung galaxy s6");
         ProductPage.clickAdd(driver);
-        Cart_I5.verifyalert(driver);
+        Cart.verifyalert(driver);
         Item.clickHomebutton(driver);
 
         // Tambah item 2
         Item.selectItemByName(driver, "Nexus 6");
         ProductPage.clickAdd(driver);
-        Cart_I5.verifyalert(driver);
+        Cart.verifyalert(driver);
 
         Item.clickCartButton(driver);
 
-        int[] prices = Cart_I5.calculateTotalPrice(driver);
-        // prices[0] adalah hasil kalkulasi, prices[1] adalah yang ditampilkan di UI
+        int[] prices = Cart.calculateTotalPrice(driver);
         Assert.assertEquals(prices[1], 1010, "Total harga di UI tidak sesuai!");
         Assert.assertEquals(prices[0], prices[1], "Kalkulasi manual tidak cocok dengan UI!");
     }
@@ -67,23 +66,23 @@ public class CartTest_I5 {
     public void testCompletePurchaseValid() {
         Item.selectItemByName(driver, "Samsung galaxy s6");
         ProductPage.clickAdd(driver);
-        Cart_I5.verifyalert(driver);
+        Cart.verifyalert(driver);
         Item.clickCartButton(driver);
 
-        Cart_I5.order(driver);
+        Cart.order(driver);
 
-        Cart_I5.fillField(driver, "name", "Agus");
-        Cart_I5.fillField(driver, "country", "USA");
-        Cart_I5.fillField(driver, "city", "New York");
-        Cart_I5.fillField(driver, "card", "1234567890123456");
-        Cart_I5.fillField(driver, "month", "December");
-        Cart_I5.fillField(driver, "year", "2025");
-        Cart_I5.inputPromo(driver, "DISC50");
-        Cart_I5.clickApply(driver);
+        Cart.fillField(driver, "name", "Agus");
+        Cart.fillField(driver, "country", "USA");
+        Cart.fillField(driver, "city", "New York");
+        Cart.fillField(driver, "card", "1234567890123456");
+        Cart.fillField(driver, "month", "December");
+        Cart.fillField(driver, "year", "2025");
+        Cart.inputPromo(driver, "DISC50");
+        Cart.clickApply(driver);
 
-        Cart_I5.purchase(driver);
+        Cart.purchase(driver);
 
-        boolean isConfirmed = Cart_I5.confirmation(driver);
+        boolean isConfirmed = Cart.confirmation(driver);
         Assert.assertTrue(isConfirmed, "Gagal mengklik tombol OK pada konfirmasi pembelian!");
     }
 
@@ -91,23 +90,23 @@ public class CartTest_I5 {
     public void testCompletePurchaseInvalid() {
         Item.selectItemByName(driver, "Samsung galaxy s6");
         ProductPage.clickAdd(driver);
-        Cart_I5.verifyalert(driver);
+        Cart.verifyalert(driver);
         Item.clickCartButton(driver);
 
-        Cart_I5.order(driver);
+        Cart.order(driver);
 
-        Cart_I5.fillField(driver, "name", "");
-        Cart_I5.fillField(driver, "country", "USA");
-        Cart_I5.fillField(driver, "city", "");
-        Cart_I5.fillField(driver, "card", "");
-        Cart_I5.fillField(driver, "month", "December");
-        Cart_I5.fillField(driver, "year", "2025");
-        Cart_I5.inputPromo(driver, "DISC50");
-        Cart_I5.clickApply(driver);
+        Cart.fillField(driver, "name", "");
+        Cart.fillField(driver, "country", "USA");
+        Cart.fillField(driver, "city", "");
+        Cart.fillField(driver, "card", "");
+        Cart.fillField(driver, "month", "December");
+        Cart.fillField(driver, "year", "2025");
+        Cart.inputPromo(driver, "DISC50");
+        Cart.clickApply(driver);
 
-        Cart_I5.purchase(driver);
+        Cart.purchase(driver);
 
-        String alertMsg = Cart_I5.getAlertText(driver);
+        String alertMsg = Cart.getAlertText(driver);
         Assert.assertEquals(alertMsg, "Please fill out Name and Creditcard.", "Pesan alert salah!");
     }
 
