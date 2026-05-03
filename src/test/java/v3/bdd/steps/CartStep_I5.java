@@ -6,12 +6,11 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+
 
 import java.util.List;
 import java.util.Map;
 
-import static helper.WebHelper.driver;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -91,7 +90,12 @@ public class CartStep_I5 extends BaseStep {
 
     @And("the user inputs the promo code {string}")
     public void theUserInputsThePromoCode(String promoCode) {
-        driver.findElement(By.id("promo")).sendKeys(promoCode);
+        sendKeys(By.id("promo"), promoCode);
+    }
+
+    @And("And the user clicks apply")
+    public void theUserClicksApply() {
+        click(By.id("apply"));
     }
 
     @And("the user clicks the Purchase")

@@ -35,7 +35,7 @@ public class ProductStep_I4 extends BaseStep {
 
     @And("the user clicks the Add to cart button")
     public void theUserClicksTheAddToCartButton() {
-        click(By.xpath("//div[@class='action']//a[text()='Add to cart']"));
+        click(By.xpath("//a[text()='Add to cart']"));
     }
 
     @Then("Show Alert message {string}")

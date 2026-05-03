@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.Select;
 import java.util.List;
 import java.util.Map;
 
-import static helper.WebHelper.driver;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -95,7 +94,7 @@ public class CartStep_I6 extends BaseStep {
 
     @And("the user inputs the promo code {string}")
     public void theUserInputsThePromoCode(String promoCode) {
-        driver.findElement(By.id("promo")).sendKeys(promoCode);
+        sendKeys(By.id("promo"), promoCode);
     }
 
     @And("the user clicks the Purchase")

@@ -5,7 +5,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 
-import static helper.WebHelper.driver;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -30,7 +29,7 @@ public class ProductStep extends BaseStep {
 
     @And("the product image should be displayed")
     public void theProductImageShouldBeDisplayed() {
-        boolean isDisplayed = driver.findElement(By.xpath("//div[@class='item active']//img")).isDisplayed();
+        boolean isDisplayed = isDisplayed(By.xpath("//div[@class='item active']//img"));
         assertTrue("Product image is not displayed!", isDisplayed);
     }
 
