@@ -12,7 +12,6 @@ import v4.bddpom.page.ProductPage;
 import java.util.List;
 import java.util.Map;
 
-import static helper.WebHelper.driver;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

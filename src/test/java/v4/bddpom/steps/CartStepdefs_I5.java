@@ -5,7 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import v4.bddpom.page.CartPage_I5;
+import v4.bddpom.page.CartPage;
 import v4.bddpom.page.ItemPage;
 import v4.bddpom.page.ProductPage;
 
@@ -19,7 +19,7 @@ public class CartStepdefs_I5 {
 
     private final ItemPage item = new ItemPage();
     private final ProductPage productPage = new ProductPage();
-    private final CartPage_I5 cart = new CartPage_I5();
+    private final CartPage cart = new CartPage();
 
     @Given("the user has added the item {string} to the cart")
     public void theUserHasAddedTheItemToTheCart(String title) {
@@ -100,6 +100,11 @@ public class CartStepdefs_I5 {
     @And("the user inputs the promo code {string}")
     public void theUserInputsThePromoCode(String promoCode) {
         cart.inputPromo(promoCode);
+    }
+
+    @And("And the user clicks the Apply")
+    public void theUserClicksApply() {
+        cart.clickApply();
     }
 
     @And("the user clicks the Purchase")
