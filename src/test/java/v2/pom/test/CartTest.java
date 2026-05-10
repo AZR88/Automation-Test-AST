@@ -58,7 +58,7 @@ public class CartTest {
         Item.clickCartButton(driver);
 
         int[] prices = Cart.calculateTotalPrice(driver);
-        // prices[0] adalah hasil kalkulasi, prices[1] adalah yang ditampilkan di UI
+
         Assert.assertEquals(prices[1], 1010, "Total harga di UI tidak sesuai!");
         Assert.assertEquals(prices[0], prices[1], "Kalkulasi manual tidak cocok dengan UI!");
     }

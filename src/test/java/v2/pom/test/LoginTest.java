@@ -1,11 +1,12 @@
 package v2.pom.test;
 
 import helper.WebHelper;
-import v2.pom.page.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import v2.pom.page.LoginPage;
+
 import static helper.WebHelper.driver;
 
 public class LoginTest {
@@ -18,13 +19,14 @@ public class LoginTest {
 
     @Test(priority = 1)
     public void testLoginValid() {
-        // Menggunakan abstraksi dari LoginPage
         LoginPage.clickLoginButton(driver);
         LoginPage.inputUsername(driver, "Beta123");
         LoginPage.inputPassword(driver, "123");
         LoginPage.clickSubmitButton(driver);
 
         String actualUser = LoginPage.getDisplayedUsername(driver);
+        Assert.assertNotNull(actualUser, "Username hasil tidak boleh null");
+        Assert.assertFalse(actualUser.isEmpty(), "Username hasil tidak boleh kosong");
         Assert.assertEquals(actualUser, "Beta123", "Username tidak sesuai!");
     }
 
@@ -36,6 +38,8 @@ public class LoginTest {
         LoginPage.clickSubmitButton(driver);
 
         String alertMsg = LoginPage.getAlertText(driver);
+        Assert.assertNotNull(alertMsg, "Alert message tidak boleh null");
+        Assert.assertFalse(alertMsg.isEmpty(), "Alert message tidak boleh kosong");
         Assert.assertEquals(alertMsg, "User does not exist.");
     }
 
@@ -47,6 +51,8 @@ public class LoginTest {
         LoginPage.clickSubmitButton(driver);
 
         String alertMsg = LoginPage.getAlertText(driver);
+        Assert.assertNotNull(alertMsg, "Alert message tidak boleh null");
+        Assert.assertFalse(alertMsg.isEmpty(), "Alert message tidak boleh kosong");
         Assert.assertEquals(alertMsg, "Please fill out Username and Password.");
     }
 
@@ -58,6 +64,8 @@ public class LoginTest {
         LoginPage.clickSubmitButton(driver);
 
         String alertMsg = LoginPage.getAlertText(driver);
+        Assert.assertNotNull(alertMsg, "Alert message tidak boleh null");
+        Assert.assertFalse(alertMsg.isEmpty(), "Alert message tidak boleh kosong");
         Assert.assertEquals(alertMsg, "Wrong password.");
     }
 
