@@ -22,7 +22,7 @@ Feature: Automation Login
 
   @invalid-Login
   Scenario: Login with invalid password
-    Given user is on homepage "https://www.demoblaze.com"
+    Given user is on homepage "https://www.demoblaze.com/"
     When user click Login button
     And user input username with "Beta123"
     And user input password with "222"
@@ -31,7 +31,7 @@ Feature: Automation Login
 
   @invalid-Login
   Scenario: Login with empty username and password
-    Given user is on homepage "https://www.demoblaze.com"
+    Given user is on homepage "https://www.demoblaze.com/"
     When user click Login button
     And user input username with ""
     And user input password with ""

@@ -23,7 +23,7 @@ Feature: Shopping Cart Functionality
       | Samsung galaxy s6  | $360   |
       | Nexus 6            | $650   |
     When Click Cart button
-    Then the total price displayed should match "$860"
+    Then the total price displayed should match "1010"
 
 
   @Valid-Cart
