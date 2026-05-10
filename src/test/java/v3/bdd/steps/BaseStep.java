@@ -13,7 +13,6 @@ public abstract class BaseStep {
 
     protected final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-    // ================== METHOD UMUM ==================
     protected void click(By locator) {
         WaitElement.waitForElement(locator);
         driver.findElement(locator).click();
