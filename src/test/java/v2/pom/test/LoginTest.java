@@ -19,6 +19,7 @@ public class LoginTest {
 
     @Test(priority = 1)
     public void testLoginValid() {
+        LoginPage.isUrlCorrect(driver,"https://www.demoblaze.com/");
         LoginPage.clickLoginButton(driver);
         LoginPage.inputUsername(driver, "Beta123");
         LoginPage.inputPassword(driver, "123");
@@ -32,6 +33,7 @@ public class LoginTest {
 
     @Test(priority = 2)
     public void testLoginInvalidUser() {
+        LoginPage.isUrlCorrect(driver,"https://www.demoblaze.com/");
         LoginPage.clickLoginButton(driver);
         LoginPage.inputUsername(driver, "UserSalah");
         LoginPage.inputPassword(driver, "123");
@@ -45,6 +47,7 @@ public class LoginTest {
 
     @Test(priority = 3)
     public void testLoginEmptyFields() {
+        LoginPage.isUrlCorrect(driver,"https://www.demoblaze.com/");
         LoginPage.clickLoginButton(driver);
         LoginPage.inputUsername(driver, "");
         LoginPage.inputPassword(driver, "");
@@ -58,6 +61,7 @@ public class LoginTest {
 
     @Test(priority = 4)
     public void testLoginInvalidPassword() {
+        LoginPage.isUrlCorrect(driver,"https://www.demoblaze.com/");
         LoginPage.clickLoginButton(driver);
         LoginPage.inputUsername(driver, "Beta123");
         LoginPage.inputPassword(driver, "222");

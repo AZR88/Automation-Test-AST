@@ -3,9 +3,7 @@ package v4.bddpom.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 
 public class LoginPage extends BasePage {
 
@@ -16,8 +14,7 @@ public class LoginPage extends BasePage {
     private static final By USER_ID = By.id("nameofuser");
 
 
-    public boolean isUrlCorrect(WebDriver driver, String expectedUrl) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    public boolean isUrlCorrect(String expectedUrl) {
         try {
             wait.until(ExpectedConditions.urlToBe(expectedUrl));
             return true;

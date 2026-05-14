@@ -12,7 +12,6 @@ public class LoginStep extends BaseStep {
 
     @Given("user is on homepage {string}")
     public void userIsOnHomepage(String expectedUrl) {
-        // Verifikasi URL
         boolean isUrlCorrect = wait.until(ExpectedConditions.urlToBe(expectedUrl));
         Assert.assertTrue("Incorrect URL!", isUrlCorrect);
     }

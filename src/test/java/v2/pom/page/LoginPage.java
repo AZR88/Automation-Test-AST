@@ -1,11 +1,7 @@
 package v2.pom.page;
 
-import helper.WaitElement;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class LoginPage extends BasePage {
 
@@ -18,7 +14,6 @@ public class LoginPage extends BasePage {
 
 
     public static boolean isUrlCorrect(WebDriver driver, String expectedUrl) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         try {
             wait.until(ExpectedConditions.urlToBe(expectedUrl));
             return true;

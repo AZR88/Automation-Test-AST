@@ -13,7 +13,7 @@ public abstract class BasePage {
 
     protected final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-    // Method umum yang dipakai di semua page
+
     protected void click(By locator) {
         WaitElement.waitForElement(locator);
         driver.findElement(locator).click();

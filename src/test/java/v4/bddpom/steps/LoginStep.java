@@ -15,7 +15,7 @@ public class LoginStep {
 
     @Given("user is on homepage {string}")
     public void userIsOnHomepage(String expectedUrl) {
-        Assert.assertTrue("URL tidak sesuai!", loginPage.isUrlCorrect(driver, expectedUrl));
+        Assert.assertTrue("URL tidak sesuai!", loginPage.isUrlCorrect(expectedUrl));
     }
 
     @When("user click Login button")

@@ -7,7 +7,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static helper.WebHelper.driver;
+
 public abstract class BasePage {
+
+    protected static final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
 
     protected static void click(WebDriver driver, By locator) {
         WaitElement.waitForElement(locator);

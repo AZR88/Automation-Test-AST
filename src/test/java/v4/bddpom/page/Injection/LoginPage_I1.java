@@ -16,7 +16,6 @@ public class LoginPage_I1 extends BasePage {
     private static final By USER_ID = By.id("nameofuser");
 
     public boolean isUrlCorrect(WebDriver driver, String expectedUrl) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         try {
             wait.until(ExpectedConditions.urlToBe(expectedUrl));
             return true;
